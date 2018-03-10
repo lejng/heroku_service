@@ -1,1 +1,1 @@
-web: java -jar target/service.jar
+web: java -jar target/service-1.0.jar
