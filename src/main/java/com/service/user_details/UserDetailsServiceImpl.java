@@ -1,6 +1,6 @@
 package com.service.user_details;
 
-import com.dao.UserDao;
+import com.dao.UserHibernateDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -13,11 +13,11 @@ import java.util.ArrayList;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
     @Autowired
-    UserDao userDao;
+    UserHibernateDao userDao;
 
     @Override
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
-        com.model.User user = userDao.findUserByPhone(phone);
+        com.model.User user = userDao.getByPhone(phone);
         if (user == null) {
             throw new UsernameNotFoundException("User " + phone + " was not found in the database");
         }

@@ -1,5 +1,6 @@
 package com.service;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,9 @@ public class TokenAuthenticationService {
         String JWT = Jwts.builder().setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET).compact();
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
+        String token = TOKEN_PREFIX + " " + JWT;
+        res.addHeader(HEADER_STRING, token);
+        addTokenToBody(res, String.format("{\"%s\": \"%s\"}",HEADER_STRING, token));
     }
 
     public static Authentication getAuthentication(HttpServletRequest request) {
@@ -31,5 +34,15 @@ public class TokenAuthenticationService {
             return user != null ? new UsernamePasswordAuthenticationToken(user, null, new LinkedList<GrantedAuthority>()) : null;
         }
         return null;
+    }
+
+    public static void addTokenToBody(HttpServletResponse res, String body){
+        try{
+            res.getWriter().write(body);
+            res.getWriter().flush();
+            res.getWriter().close();
+        }catch (IOException e){
+            return;
+        }
     }
 }

@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.dao.UserHibernateDao;
+import com.model.User;
 import com.utils.EncodePasswordUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -74,14 +75,11 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        /*String username = "375291111111";
+        String username = "375291111111";
         String password = "1234";
         String authorizationString = postLogin(username, password);
         System.out.println("Authorization String=" + authorizationString);
         // Call REST API:
-        callRESTApi(URL_EMPLOYEES, authorizationString);*/
-        UserHibernateDao dao = new UserHibernateDao();
-        System.out.println(dao.getByPhone("+375293111716"));
-        //System.out.println(EncodePasswordUtils.encodePassword("1234"));
+        callRESTApi(URL_EMPLOYEES, authorizationString);
     }
 }

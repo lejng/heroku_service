@@ -5,8 +5,8 @@ CREATE TABLE service.users (
      password  varchar(100) NOT NULL,
      name      varchar(40) NOT NULL,
      surname   varchar(40) NOT NULL,
-     balance   float4 NOT NULL,
-     confirm   bool NOT NULL
+     balance   float4 NOT NULL DEFAULT 0,
+     confirm   bool NOT NULL DEFAULT false
 )
 WITH (
 	OIDS=FALSE
