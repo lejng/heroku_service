@@ -1,4 +1,4 @@
-package com.service;
+package com.service.user_details;
 
 import com.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,4 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         UserDetails userDetails = new User(user.getPhone(), user.getPassword(), new ArrayList<GrantedAuthority>());
         return userDetails;
     }
-
-
 }
