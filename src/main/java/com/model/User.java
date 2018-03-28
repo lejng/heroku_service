@@ -1,12 +1,33 @@
 package com.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "service.users")
 public class User {
+    @Id
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "phone")
     private String phone;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "surname")
     private String surname;
+
+    @Column(name = "balance")
     private Double balance;
+
+    @Column(name = "confirm")
     private Boolean isConfirm;
 
     public String getPhone() {
