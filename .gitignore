@@ -12,6 +12,7 @@
 *.pyc
 *.log
 *.html
+*.impl
 output.xml
 
 
