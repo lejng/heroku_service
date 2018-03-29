@@ -3,6 +3,8 @@ package com.dao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import java.util.List;
+
 public class AbstractDao<T> {
     protected Class clazz;
 
@@ -29,12 +31,13 @@ public class AbstractDao<T> {
         session.close();
     }
 
-    public void insert(T entity){
+    public Integer insert(T entity){
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        session.save(entity);
+        Integer id = (Integer)session.save(entity);
         session.getTransaction().commit();
         session.close();
+        return id;
     }
 
     public void update(T entity){
@@ -43,5 +46,14 @@ public class AbstractDao<T> {
         session.update(entity);
         session.getTransaction().commit();
         session.close();
+    }
+
+    public List<T> getAll(){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        List<T> allRecords = session.createCriteria(clazz).list();
+        session.getTransaction().commit();
+        session.close();
+        return allRecords;
     }
 }
