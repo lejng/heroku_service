@@ -11,3 +11,13 @@ CREATE TABLE service.users (
 WITH (
 	OIDS=FALSE
 ) ;
+
+CREATE TABLE service.advertising (
+	 id        SERIAL PRIMARY KEY ,
+     link      varchar(500) NOT NULL,
+     cost      float4 NOT NULL,
+     timer     integer DEFAULT 0
+)
+WITH (
+	OIDS=FALSE
+) ;
