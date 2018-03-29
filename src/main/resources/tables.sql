@@ -21,3 +21,12 @@ CREATE TABLE service.advertising (
 WITH (
 	OIDS=FALSE
 ) ;
+
+CREATE TABLE service.users_advertising (
+     id              SERIAL PRIMARY KEY,
+     id_advertising  integer NOT NULL REFERENCES service.advertising(id) ON DELETE CASCADE ON UPDATE CASCADE,
+     id_user         integer NOT NULL REFERENCES service.users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+     viewed          bool NOT NULL DEFAULT false
+)WITH (
+	OIDS=FALSE
+) ;
