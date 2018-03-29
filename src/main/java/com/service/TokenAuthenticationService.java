@@ -2,9 +2,13 @@ package com.service;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.utils.JsonUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import io.jsonwebtoken.Jwts;
@@ -23,7 +27,9 @@ public class TokenAuthenticationService {
                 .signWith(SignatureAlgorithm.HS512, SECRET).compact();
         String token = TOKEN_PREFIX + " " + JWT;
         res.addHeader(HEADER_STRING, token);
-        addTokenToBody(res, String.format("{\"%s\": \"%s\"}",HEADER_STRING, token));
+        Map body = new HashMap<String, String>();
+        body.put(HEADER_STRING, token);
+        addTokenToBody(res, JsonUtils.mapToJson(body));
     }
 
     public static Authentication getAuthentication(HttpServletRequest request) {

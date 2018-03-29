@@ -1,11 +1,11 @@
 package test;
 
+import com.utils.JsonUtils;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
-import java.util.List;
 
 public class Request {
 
@@ -17,9 +17,8 @@ public class Request {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(parametersMap, headers);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
-        HttpHeaders responseHeaders = response.getHeaders();
-        List<String> list = responseHeaders.get("Authorization");
-        return list == null || list.isEmpty() ? null : list.get(0);
+        System.out.println(String.format("======[ body: %s]========", response.getBody()));
+        return (String)JsonUtils.convertJsonToMap(response.getBody()).get("Authorization");
     }
 
     public static String callGetRequest(String url, String authorizationString) {
@@ -31,6 +30,7 @@ public class Request {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(url,HttpMethod.GET, entity, String.class);
         String result = response.getBody();
+        System.out.println(String.format("======[ body: %s]========", result));
         return result;
     }
 }
