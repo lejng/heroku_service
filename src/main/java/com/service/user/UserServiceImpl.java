@@ -1,6 +1,7 @@
 package com.service.user;
 
 import com.dao.AdvertisingDao;
+import com.dao.HibernateUtil;
 import com.dao.UserAdvertisingDao;
 import com.dao.UserHibernateDao;
 import com.model.Advertising;
@@ -9,6 +10,7 @@ import com.model.UserAdvertising;
 import com.utils.EncodePasswordUtils;
 import com.utils.JsonUtils;
 import com.validator.UserValidator;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,30 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserValidator userValidator;
+
+    public ResponseEntity viewedAdvertising(Integer advertisingId){
+        List<UserAdvertising> userAdvertisings = userAdvertisingDao.getAdvertisingByAdvertisingId(advertisingId);
+        UserAdvertising advertising = null;
+        User currentUser = getCurrentUser();
+        for(UserAdvertising item : userAdvertisings){
+           if(item.getUserId().equals(currentUser.getId())){
+               advertising = item;
+               break;
+           }
+        }
+        if(!advertising.isViewed()) {
+            advertising.setViewed(true);
+            Double cost = advertisingDao.getById(advertisingId).getCost();
+            currentUser.setBalance(currentUser.getBalance() + cost);
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.update(currentUser);
+            session.update(advertising);
+            session.getTransaction().commit();
+            session.close();
+        }
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
 
     public List<Advertising> getAvailableAdvertisingForCurrentUser(){
         Integer userId = getCurrentUser().getId();

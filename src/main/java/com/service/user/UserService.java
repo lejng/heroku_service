@@ -10,4 +10,5 @@ public interface UserService {
     User getCurrentUser();
     ResponseEntity create(User user);
     List<Advertising> getAvailableAdvertisingForCurrentUser();
+    ResponseEntity viewedAdvertising(Integer advertisingId);
 }
