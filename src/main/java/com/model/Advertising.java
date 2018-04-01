@@ -4,6 +4,19 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "service.advertising")
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "findAvailableAdvertisingWithUserId",
+                query = "SELECT * " +
+                        "FROM   service.advertising " +
+                        "       INNER JOIN service.users_advertising " +
+                        "               ON service.advertising.id = " +
+                        "                  service.users_advertising.id_advertising " +
+                        "WHERE  service.users_advertising.viewed = false " +
+                        "       AND service.users_advertising.id_user = :userId",
+                resultClass = Advertising.class
+        )
+})
 public class Advertising {
     @Id
     @Column(name = "id")

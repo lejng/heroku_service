@@ -6,7 +6,6 @@ CREATE TABLE service.users (
      name      varchar(40) NOT NULL,
      surname   varchar(40) NOT NULL,
      balance   float4 NOT NULL DEFAULT 0,
-     confirm   bool NOT NULL DEFAULT false
 )
 WITH (
 	OIDS=FALSE
@@ -28,5 +27,14 @@ CREATE TABLE service.users_advertising (
      id_user         integer NOT NULL REFERENCES service.users(id) ON DELETE CASCADE ON UPDATE CASCADE,
      viewed          bool NOT NULL DEFAULT false
 )WITH (
+	OIDS=FALSE
+) ;
+
+CREATE TABLE service.phone_confirm (
+	 id            SERIAL PRIMARY KEY ,
+     phone         varchar(40) NOT NULL UNIQUE,
+     confirm_code  varchar(40) NOT NULL
+)
+WITH (
 	OIDS=FALSE
 ) ;

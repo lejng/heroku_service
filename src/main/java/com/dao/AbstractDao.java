@@ -1,8 +1,8 @@
 package com.dao;
 
+import com.utils.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
-
 import java.util.List;
 
 public class AbstractDao<T> {
@@ -44,6 +44,14 @@ public class AbstractDao<T> {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         session.update(entity);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public void saveOrUpdate(T entity){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.saveOrUpdate(entity);
         session.getTransaction().commit();
         session.close();
     }

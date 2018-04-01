@@ -1,10 +1,7 @@
 import com.dao.AdvertisingDao;
-import com.dao.UserAdvertisingDao;
 import com.dao.UserHibernateDao;
 import com.model.Advertising;
 import com.model.User;
-import com.model.UserAdvertising;
-
 import java.util.List;
 
 public class AddAdvertising {
@@ -17,7 +14,7 @@ public class AddAdvertising {
     }
 
     public static void addAdvertising(Advertising advertising){
-        AdvertisingDao advertisingDao = new AdvertisingDao();
+        /*AdvertisingDao advertisingDao = new AdvertisingDao();
         Integer advertisingId = advertisingDao.insert(advertising);
         List<User> users = new UserHibernateDao().getAll();
         UserAdvertisingDao userAdvertisingDao = new UserAdvertisingDao();
@@ -26,6 +23,6 @@ public class AddAdvertising {
             userAdvertising.setUserId(user.getId());
             userAdvertising.setAdvertisingId(advertisingId);
             userAdvertisingDao.insert(userAdvertising);
-        }
+        }*/
     }
 }

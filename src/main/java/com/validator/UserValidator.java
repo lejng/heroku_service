@@ -1,23 +1,31 @@
 package com.validator;
 
+import com.dao.PhoneConfirmDao;
+import com.model.PhoneConfirm;
 import com.model.User;
 import com.utils.EncodePasswordUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class UserValidator {
+    @Autowired
+    private PhoneConfirmDao phoneConfirmDao;
 
     public User setDefaultFields(User user){
         user.setPassword(EncodePasswordUtils.encodePassword(user.getPassword()));
-        user.setConfirm(false);
         user.setBalance(0.0);
         return user;
     }
 
     public Map<String, Object> getUserErrors(User user){
+        PhoneConfirm rightPhoneConfirm = phoneConfirmDao.getByPhone(user.getPhone());
         Map<String, Object> body = new HashMap<>();
+        if(rightPhoneConfirm == null && !rightPhoneConfirm.getConfirmCode().equals(user.getConfirmCode())){
+            body.put("ConfirmCode","check confirm code field");
+        }
         if(isPhoneCorrect(user.getPhone())){
             body.put("Phone","check phone field");
         }

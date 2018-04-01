@@ -1,6 +1,5 @@
-package com.dao;
+package com.utils;
 
-import com.utils.PropertyHelper;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;

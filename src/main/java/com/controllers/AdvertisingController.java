@@ -1,6 +1,7 @@
 package com.controllers;
 
 import com.model.Advertising;
+import com.service.advertising.AdvertisingService;
 import com.service.user.UserService;
 import com.utils.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 public class AdvertisingController {
     @Autowired
+    private AdvertisingService advertisingService;
+    @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/availableAdvertisingsForView", method = GET)
     @ResponseBody
     public List<Advertising> availableAdvertisingsForView() {
-        return userService.getAvailableAdvertisingForCurrentUser();
-    }
-
-    @RequestMapping(value = "/confirmViewAdvertising", method = POST)
-    @ResponseBody
-    public ResponseEntity confirmViewAdvertising(@RequestBody String info) {//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        Map<String, Object> advertising = JsonUtils.convertJsonToMap(info);
-        return userService.viewedAdvertising((Integer)advertising.get("advertising_id"));
+        return advertisingService.getAvailableAdvertisingForCurrentUser();
     }
 }

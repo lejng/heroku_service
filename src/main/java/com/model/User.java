@@ -26,8 +26,16 @@ public class User {
     @Column(name = "balance")
     private Double balance;
 
-    @Column(name = "confirm")
-    private Boolean isConfirm;
+    @Transient
+    private String confirmCode;
+
+    public String getConfirmCode() {
+        return confirmCode;
+    }
+
+    public void setConfirmCode(String confirmCode) {
+        this.confirmCode = confirmCode;
+    }
 
     public String getPhone() {
         return phone;
@@ -77,14 +85,6 @@ public class User {
         this.balance = balance;
     }
 
-    public Boolean getConfirm() {
-        return isConfirm;
-    }
-
-    public void setConfirm(Boolean confirm) {
-        isConfirm = confirm;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -94,7 +94,6 @@ public class User {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", balance=" + balance +
-                ", isConfirm=" + isConfirm +
                 '}';
     }
 }

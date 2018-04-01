@@ -1,8 +1,8 @@
 package com.dao;
 
 import com.model.User;
+import com.utils.HibernateUtil;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
