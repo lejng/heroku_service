@@ -11,7 +11,6 @@ import java.util.List;
 public class AdvertisingServiceImpl implements AdvertisingService {
     @Autowired
     private AdvertisingDao advertisingDao;
-
     @Autowired
     private UserService userService;
 

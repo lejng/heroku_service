@@ -19,4 +19,12 @@ public class JsonUtils {
             return null;
         }
     }
+
+    public static Object convertJsonTo(String json, Class clazz){
+        try {
+            return new ObjectMapper().readValue(json, clazz);
+        }catch (Exception e){
+            return null;
+        }
+    }
 }

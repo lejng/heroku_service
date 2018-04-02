@@ -67,9 +67,9 @@ public class Advertising {
 
     @Override
     public String toString() {
-        return "Advertising{" +
+        return "{" +
                 "id=" + id +
-                ", link='" + link + '\'' +
+                ", link=" + link +
                 ", cost=" + cost +
                 ", timer=" + timer +
                 '}';

@@ -1,5 +1,6 @@
 package com.config;
 
+import com.controllers.UserController;
 import com.filter.JWTAuthenticationFilter;
 import com.filter.JWTLoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    public static final String LOGIN = "/login";
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -23,10 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
         // No need authentication.
                 .antMatchers("/").permitAll() //
-                .antMatchers(HttpMethod.POST, "/registration").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll() //
-                .antMatchers(HttpMethod.POST, "/sendConfirmCode").permitAll()
-                .antMatchers(HttpMethod.POST, "/checkConfirmCode").permitAll()
+                .antMatchers(HttpMethod.POST, UserController.REGISTRATION).permitAll()
+                .antMatchers(HttpMethod.POST, LOGIN).permitAll() //
+                .antMatchers(HttpMethod.POST, UserController.SEND_CONFIRM_CODE).permitAll()
+                .antMatchers(HttpMethod.POST, UserController.CHECK_CONFIRM_CODE).permitAll()
                 // Need authentication.
                 .anyRequest().authenticated()
                 //
@@ -34,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //
                 // Add Filter 1 - JWTLoginFilter
                 //
-                .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTLoginFilter(LOGIN, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                 //
                 // Add Filter 2 - JWTAuthenticationFilter
                 //

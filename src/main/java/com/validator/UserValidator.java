@@ -3,7 +3,6 @@ package com.validator;
 import com.dao.PhoneConfirmDao;
 import com.model.PhoneConfirm;
 import com.model.User;
-import com.utils.EncodePasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
@@ -14,58 +13,55 @@ public class UserValidator {
     @Autowired
     private PhoneConfirmDao phoneConfirmDao;
 
-    public User setDefaultFields(User user){
-        user.setPassword(EncodePasswordUtils.encodePassword(user.getPassword()));
-        user.setBalance(0.0);
-        return user;
-    }
-
     public Map<String, Object> getUserErrors(User user){
-        PhoneConfirm rightPhoneConfirm = phoneConfirmDao.getByPhone(user.getPhone());
         Map<String, Object> body = new HashMap<>();
-        if(rightPhoneConfirm == null && !rightPhoneConfirm.getConfirmCode().equals(user.getConfirmCode())){
-            body.put("ConfirmCode","check confirm code field");
-        }
-        if(isPhoneCorrect(user.getPhone())){
-            body.put("Phone","check phone field");
-        }
-        if(isNameCorrect(user.getName())){
-            body.put("Name", "check name field");
-        }
-        if(isSurnameCorrect(user.getSurname())){
-            body.put("Surname", "check surname field");
-        }
-        if(isPasswordCorrect(user.getPassword())){
-            body.put("Password", "check password field");
-        }
-        return body;
+        body = putInMapIfNotNull("ConfirmCode",getConfirmCodeErrors(user), body);
+        body = putInMapIfNotNull("Phone", getPhoneErrors(user.getPhone()), body);
+        body = putInMapIfNotNull("Name", getNameErrors(user.getName()), body);
+        body = putInMapIfNotNull("Surname", getSurnameErrors(user.getSurname()), body);
+        return  putInMapIfNotNull("Password", getPasswordErrors(user.getPassword()), body);
     }
 
-    private boolean isPhoneCorrect(String phone){
-        if(phone.length() > 10){
-            return false;
+    public String getConfirmCodeErrors(User user){
+        PhoneConfirm rightPhoneConfirm = phoneConfirmDao.getByPhone(user.getPhone());
+        if(rightPhoneConfirm == null || !rightPhoneConfirm.getConfirmCode().equals(user.getConfirmCode())){
+            return "check confirm code field";
         }
-        return true;
+        return null;
     }
 
-    private boolean isNameCorrect(String name){
-        if(name.length() > 3){
-            return false;
+    public String getPhoneErrors(String phone){
+        if(phone == null || phone.length() < 9){
+            return "check phone field";
         }
-        return true;
+        return null;
     }
 
-    private boolean isSurnameCorrect(String surname){
-        if(surname.length() > 3){
-            return false;
+    public String getNameErrors(String name){
+        if(name == null || name.length() < 3){
+            return "check name field";
         }
-        return true;
+        return null;
     }
 
-    private boolean isPasswordCorrect(String password){
-        if(password.length() > 4){
-            return false;
+    public String getSurnameErrors(String surname){
+        if(surname == null || surname.length() < 3){
+            return "check surname field";
         }
-        return true;
+        return null;
+    }
+
+    public String getPasswordErrors(String password){
+        if(password == null || password.length() < 4){
+            return "check password field";
+        }
+        return null;
+    }
+
+    public Map<String, Object> putInMapIfNotNull(String key, Object value, Map<String, Object> map){
+        if(value != null){
+            map.put(key, value);
+        }
+        return map;
     }
 }
