@@ -38,36 +38,22 @@ public class UserController {
     @ResponseBody
     public ResponseEntity registerUser(@RequestBody User user) {
         Map<String, Object> response = userService.create(user);
-        if((boolean)response.get("isCreate")){
-            return new ResponseEntity(JsonUtils.mapToJson(response), HttpStatus.CREATED);
-        }else{
-            return new ResponseEntity(JsonUtils.mapToJson(response), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity(JsonUtils.mapToJson(response), HttpStatus.OK);
     }
 
     @RequestMapping(value = SEND_CONFIRM_CODE, method = POST)
     @ResponseBody
     public ResponseEntity sendConfirmCode(@RequestBody PhoneConfirm phoneConfirm) {
-        boolean isSend = phoneConfirmService.sendConfirmCode(phoneConfirm);
         Map<String, Object> body = new HashMap<>();
-        if(!isSend){
-            body.put("Answer", "errors, sms was not send");
-            return new ResponseEntity(JsonUtils.mapToJson(body), HttpStatus.BAD_REQUEST);
-        }
-        body.put("Answer", "check you phone, sms was send");
-        return new ResponseEntity(JsonUtils.mapToJson(body), HttpStatus.ACCEPTED);
+        body.put("Send", phoneConfirmService.sendConfirmCode(phoneConfirm));
+        return new ResponseEntity(JsonUtils.mapToJson(body), HttpStatus.OK);
     }
 
     @RequestMapping(value = CHECK_CONFIRM_CODE, method = POST)
     @ResponseBody
     public ResponseEntity checkConfirmCode(@RequestBody PhoneConfirm phoneConfirm) {
         Map<String, Object> body = new HashMap<>();
-        boolean isCorrect = phoneConfirmService.checkConfirmCode(phoneConfirm);
-        if(!isCorrect){
-            body.put("Answer", "incorrect confirm code");
-            return new ResponseEntity(JsonUtils.mapToJson(body), HttpStatus.BAD_REQUEST);
-        }
-        body.put("Answer", "confirm code correct");
-        return new ResponseEntity(JsonUtils.mapToJson(body), HttpStatus.ACCEPTED);
+        body.put("Correct", phoneConfirmService.checkConfirmCode(phoneConfirm));
+        return new ResponseEntity(JsonUtils.mapToJson(body), HttpStatus.OK);
     }
 }
